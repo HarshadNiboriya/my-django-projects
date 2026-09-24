@@ -9,16 +9,17 @@ urlpatterns = [
     path('signin/',views.user_signin),
     path('signup/',views.user_signup),
     path('logout/',views.user_logout),
-    path('testlist/',views.test_list),
     path('list/',views.user_list),
     path('delete/<int:id>/', views.delete_user),
     path('save/',views.user_save),
-    path('edit/<int:id>/', views.edit_user),
-    path('create/', views.create_session),
-    path('access/', views.access_session),
-    path('destroy/', views.destroy_session),
-    path('set/', views.set_cookies),
-    path('get/', views.get_cookies)
+    path('save/<int:id>/', views.user_save),
+    # path('edit/<int:id>/', views.edit_user),
+    # path('testlist/',views.test_list),
+    # path('create/', views.create_session),
+    # path('access/', views.access_session),
+    # path('destroy/', views.destroy_session),
+    # path('set/', views.set_cookies),
+    # path('get/', views.get_cookies)
 ]
 
 
