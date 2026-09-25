@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include 'header.html' %}
+<br><br><br><br><br><br><br><br>
+<div align="center">
+    <h1>Welcome to ORS App</h1>
+
+    {% if first_name == None %}
+    <h3>Hi, Guest</h3>
+    {% else %}
+    <h3>Hi, {{ first_name }}</h3>
+    {% endif %}
+
+</div>
+</body>
+</html>
