@@ -11,14 +11,12 @@ class UserListCtl(BaseCtl):
     def request_to_form(self, request):
         self.form['first_name'] = request.POST.get('firstName')
 
-    def display(self, request, params = {}):
-
+    def display(self, request, params={}):
         user_list = self.get_service().search(self.form)
         self.form['list'] = user_list
         return render(request, self.get_template(), {"form": self.form})
 
-
-    def submit(self, request,params = {}):
+    def submit(self, request, params={}):
 
         if request.POST.get('operation', '') == "next":
             self.form['page_no'] = int(request.POST['pageNo'])

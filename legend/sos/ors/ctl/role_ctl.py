@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from .base_ctl import BaseCtl
 from ..models import Role
@@ -7,7 +7,6 @@ from ..utility.data_validator import DataValidator
 
 
 class RoleCtl(BaseCtl):
-
 
     def input_validation(self, request):
         input_error = self.form.get("input_error")
@@ -36,49 +35,25 @@ class RoleCtl(BaseCtl):
         self.form['name'] = obj.name
         self.form['description'] = obj.description
 
-    def display(self, request,params = {}):
-        if params ['operation'] == 'edit' and params ['id'] > 0:
+    def display(self, request, params={}):
+        if params['operation'] == 'edit' and params['id'] > 0:
             role = self.get_service().get(params['id'])
             self.model_to_form(role)
         return render(request, self.get_template(), {'form': self.form})
 
-    def submit(self, request,params ={}):
-
-        operation = request.POST.get('operation', '')
-
-        if operation in ['save', 'update']:
-            
-            if self.input_validation(request):
-                return render(request, self.get_template(), {'form': self.form})
-
-            try:
-                role = self.form_to_model(Role())
-                self.get_service().save(role)
-                self.form['message'] = 'Role Added Successfully...!!!'
-            except Exception as e:
-                self.form['message'] = str(e)
-                self.form['error'] = True
-
-            return render(request, self.get_template(), {'form': self.form})
-
-        elif operation == 'update':
-
-            try:
-                role = self.form_to_model(Role())
-                self.get_service().save(role)
+    def submit(self, request, params={}):
+        try:
+            role = self.form_to_model(Role())
+            self.get_service().save(role)
+            if self.form['id'] > 0:
                 self.form['message'] = 'Role Updated Successfully...!!!'
-            except Exception as e:
-                self.form['message'] = str(e)
-                self.form['error'] = True
+            else:
+                self.form['message'] = 'Role Added Successfully...!!!'
+        except Exception as e:
+            self.form['message'] = str(e)
+            self.form['error'] = True
 
-            return render(request, self.get_template(), {'form': self.form})
-
-        elif operation == "reset":
-            return redirect('/ors/Role/')
-
-        elif operation == "list":
-            return redirect('/ors/RoleList/')
-
+        return render(request, self.get_template(), {'form': self.form})
 
     def get_service(self):
         return RoleService()

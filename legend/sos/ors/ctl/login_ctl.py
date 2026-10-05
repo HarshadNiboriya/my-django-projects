@@ -12,9 +12,6 @@ class LoginCtl(BaseCtl):
         self.form['password'] = request.POST.get('password')
 
     def input_validation(self, request):
-        operation = request.POST.get('operation', '')
-        if operation == 'SignUp':
-            return False
         input_error = self.form['input_error']
         input_error['error'] = False
 
@@ -27,26 +24,20 @@ class LoginCtl(BaseCtl):
 
         return input_error['error']
 
-    def display(self, request,params = {}):
+    def display(self, request, params={}):
         return render(request, self.get_template(), {'form': self.form})
 
-    def submit(self, request, params = {}):
-        if request.POST.get('operation', '') == "signIn":
+    def submit(self, request, params={}):
+        user = self.get_service().authenticate(self.form['login_id'], self.form['password'])
 
-            user = self.get_service().authenticate(self.form['login_id'], self.form['password'])
+        if user:
+            request.session['first_name'] = user.first_name
+            return redirect('/ors/Welcome/')
+        else:
+            self.form['message'] = 'Login ID & Password Invalid'
+            self.form['error'] = True
 
-            if user:
-                request.session['first_name'] = user.first_name
-                return redirect('/ors/Welcome/')
-            else:
-                self.form['message'] = 'Login ID & Password Invalid'
-                self.form['error'] = True
-
-            return render(request, self.get_template(), {'form': self.form})
-
-        if request.POST.get('operation', '') == "signUp":
-            return redirect('/ors/Registration/')
-
+        return render(request, self.get_template(), {'form': self.form})
 
     def get_service(self):
         return UserService()

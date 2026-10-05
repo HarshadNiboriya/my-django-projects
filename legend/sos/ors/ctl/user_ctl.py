@@ -37,11 +37,9 @@ class UserCtl(BaseCtl):
         self.form['address'] = obj.address
 
     def input_validation(self, request):
-        operation = request.POST.get('operation', '')
-        if operation == 'reset':
-            return False
         input_error = self.form.get("input_error")
         input_error['error'] = False
+
         if (DataValidator.is_null(request.POST.get("firstName", ''))):
             input_error['first_name'] = 'First Name is required'
             input_error['error'] = True
@@ -65,43 +63,19 @@ class UserCtl(BaseCtl):
     def display(self, request, params={}):
         return render(request, self.get_template(), {'form': self.form})
 
-    def submit(self, request,params = {}):
-
-        operation = request.POST.get('operation', '')
-
-        if operation in ['save','update']:
-
-            try:
-                user = self.form_to_model(User())
-                self.get_service().save(user)
-                self.form['message'] = 'User Added Successfully...!!!'
-            except Exception as e:
-                self.form['message'] = str(e)
-                self.form['error'] = True
-
-            return render(request,  self.get_template(), {'form': self.form})
-
-        elif operation == 'update':
-            self.request_to_form(request)
-
-            if self.input_validation(request):
-                return render(request,  self.get_template(), {'form': self.form})
-
-            try:
-                user = self.form_to_model(User())
-                self.get_service().save(user)
+    def submit(self, request, params={}):
+        try:
+            user = self.form_to_model(User())
+            self.get_service().save(user)
+            if self.form['id'] > 0:
                 self.form['message'] = 'User Updated Successfully...!!!'
-            except Exception as e:
-                self.form['message'] = str(e)
-                self.form['error'] = True
-
-            return render(request,  self.get_template(), {'form': self.form})
-
-        if operation == "reset":
-            return redirect('/ors/User/')
-
-        if operation == "list":
-            return redirect('/ors/UserList/')
+            else:
+                self.form['message'] = 'User Added Successfully...!!!'
+        except Exception as e:
+            self.form['message'] = str(e)
+            self.form['error'] = True
+            
+        return render(request, self.get_template(), {'form': self.form})
 
     def get_service(self):
         return UserService()

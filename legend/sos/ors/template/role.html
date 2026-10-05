@@ -40,10 +40,10 @@
                 <td>
                     {% if form.id > 0 %}
                     <input type="submit" name="operation" value="update">
-                    <input type="submit" name="operation" value="list">
+                    <button><a href="/ors/RoleList/">list</a></button>
                     {% else %}
                     <input type="submit" name="operation" value="save">
-                    <input type="submit" name="operation" value="reset">
+                    <button><a href="/ors/Role/">reset</a></button>
                     {% endif %}
                 </td>
             </tr>

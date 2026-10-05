@@ -28,12 +28,9 @@ class RegistrationCtl(BaseCtl):
         return obj
 
     def input_validation(self, request):
-        operation = request.POST.get('operation','')
-        if operation == 'reset':
-            return False
-
         input_error = self.form['input_error']
         input_error['error'] = False
+
         if (DataValidator.is_null(request.POST.get("firstName", ''))):
             input_error['first_name'] = 'First Name is required'
             input_error['error'] = True
@@ -54,26 +51,20 @@ class RegistrationCtl(BaseCtl):
             input_error['error'] = True
         return input_error['error']
 
-    def display(self, request,params ={}):
+    def display(self, request, params={}):
         return render(request, self.get_template(), {'form': self.form})
 
-    def submit(self, request, params = {}):
+    def submit(self, request, params={}):
 
-        if request.POST.get('operation', '') == "signUp":
-
-            try:
-                user = self.form_to_model(User())
-                self.get_service().save(user)
-                self.form['message'] = 'User Registration Successfully...!!!'
-                self.form['error'] = False
-            except Exception as e:
-                self.form['message'] = str(e)
-                self.form['error'] = True
-            return render(request, self.get_template(), {'form': self.form})
-
-        if request.POST.get('operation', '') == "reset":
-            return redirect('/ors/Registration/')
-
+        try:
+            user = self.form_to_model(User())
+            self.get_service().save(user)
+            self.form['message'] = 'User Registration Successfully...!!!'
+            self.form['error'] = False
+        except Exception as e:
+            self.form['message'] = str(e)
+            self.form['error'] = True
+        return render(request, self.get_template(), {'form': self.form})
 
     def get_service(self):
         return UserService()
