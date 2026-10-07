@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from .base_ctl import BaseCtl
 from ..models import User
@@ -21,7 +21,9 @@ class UserCtl(BaseCtl):
         self.form['dob'] = request.POST.get('dob')
         self.form['address'] = request.POST.get('address')
         self.form['gender'] = request.POST.get('gender')
-
+        self.form['role_id'] = request.POST.get('role_id')
+        if self.form['role_id'] != '':
+            self.form['role_name'] = RoleService().get(self.form['role_id']).name
 
     def form_to_model(self, obj):
         obj.id = self.form['id']
@@ -32,7 +34,8 @@ class UserCtl(BaseCtl):
         obj.dob = self.form['dob']
         obj.address = self.form['address']
         obj.gender = self.form['gender']
-        obj.role_id = int(self.form['role_id'].name)
+        obj.role_id = int(self.form['role_id'])
+        obj.role_name = RoleService().get(self.form['role_id']).name
         return obj
 
     def model_to_form(self, obj):
@@ -68,8 +71,13 @@ class UserCtl(BaseCtl):
             input_error['error'] = True
         if (DataValidator.is_null(request.POST.get("address", ''))):
             input_error['address'] = 'Address is required'
-            input_error['error'] = True
-        return input_error['error']
+            if (DataValidator.is_null(request.POST.get("gender", ''))):
+                input_error['gender'] = 'Gender is required'
+                input_error['error'] = True
+            if (DataValidator.is_null(request.POST.get("role_id", ''))):
+                input_error['role_id'] = 'Role is required'
+                input_error['error'] = True
+            return input_error['error']
 
     def display(self, request, params={}):
         return render(request, self.get_template(), {'form': self.form})

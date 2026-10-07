@@ -15,7 +15,7 @@ class RoleCtl(BaseCtl):
             input_error['name'] = 'Name is required'
             input_error['error'] = True
         if (DataValidator.is_null(request.POST.get("description", ''))):
-            input_error['description'] = 'Description is required'
+            input_error['description'] = 'Last Name is required'
             input_error['error'] = True
         return input_error['error']
 

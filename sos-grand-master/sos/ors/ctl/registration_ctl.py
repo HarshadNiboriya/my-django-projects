@@ -52,8 +52,11 @@ class RegistrationCtl(BaseCtl):
             input_error['error'] = True
         if (DataValidator.is_null(request.POST.get("address", ''))):
             input_error['address'] = 'Address is required'
-            input_error['error'] = True
-        return input_error['error']
+            if (DataValidator.is_null(request.POST.get("gender", ''))):
+                input_error['gender'] = 'Gender is required'
+                input_error['error'] = True
+            return input_error['error']
+
 
     def display(self, request, params={}):
         return render(request, self.get_template(), {'form': self.form})
