@@ -9,38 +9,8 @@ from ..utility.data_validator import DataValidator
 
 class UserCtl(BaseCtl):
 
-    def preload(self, request):
+    def preload(self,request):
         self.form['preload_list'] = RoleService().search({})
-
-    def input_validation(self, request):
-        input_error = self.form.get("input_error")
-        input_error['error'] = False
-
-        if (DataValidator.is_null(request.POST.get("firstName", ''))):
-            input_error['first_name'] = 'First Name is required'
-            input_error['error'] = True
-        if (DataValidator.is_null(request.POST.get("lastName", ''))):
-            input_error['last_name'] = 'Last Name is required'
-            input_error['error'] = True
-        if (DataValidator.is_null(request.POST.get("loginId", ''))):
-            input_error['login_id'] = 'Login ID is required'
-            input_error['error'] = True
-        if (DataValidator.is_null(request.POST.get("password", ''))):
-            input_error['password'] = 'Password is required'
-            input_error['error'] = True
-        if (DataValidator.is_null(request.POST.get("dob", ''))):
-            input_error['dob'] = 'DOB is required'
-            input_error['error'] = True
-        if (DataValidator.is_null(request.POST.get("address", ''))):
-            input_error['address'] = 'Address is required'
-            input_error['error'] = True
-        if (DataValidator.is_null(request.POST.get("gender", ''))):
-            input_error['gender'] = 'Gender is required'
-            input_error['error'] = True
-        if (DataValidator.is_null(request.POST.get("role_id", ''))):
-            input_error['role_id'] = 'Role is required'
-            input_error['error'] = True
-        return input_error['error']
 
     def request_to_form(self, request):
         self.form['id'] = int(request.POST.get('id', 0))
@@ -80,21 +50,55 @@ class UserCtl(BaseCtl):
         self.form['role_id'] = obj.role_id
         self.form['role_name'] = obj.role_name
 
+    def input_validation(self, request):
+        input_error = self.form['input_error']
+        input_error['error'] = False
+        if (DataValidator.is_null(request.POST.get("firstName", ''))):
+            input_error['first_name'] = 'First Name is required'
+            input_error['error'] = True
+        if (DataValidator.is_null(request.POST.get("lastName", ''))):
+            input_error['last_name'] = 'Last Name is required'
+            input_error['error'] = True
+        if (DataValidator.is_null(request.POST.get("loginId", ''))):
+            input_error['login_id'] = 'Login ID is required'
+            input_error['error'] = True
+        if (DataValidator.is_null(request.POST.get("password", ''))):
+            input_error['password'] = 'Password is required'
+            input_error['error'] = True
+        if (DataValidator.is_null(request.POST.get("dob", ''))):
+            input_error['dob'] = 'DOB is required'
+            input_error['error'] = True
+        if (DataValidator.is_null(request.POST.get("address", ''))):
+            input_error['address'] = 'Address is required'
+            input_error['error'] = True
+        if (DataValidator.is_null(request.POST.get("gender", ''))):
+            input_error['gender'] = 'Gender is required'
+            input_error['error'] = True
+        if (DataValidator.is_null(request.POST.get("role_id", ''))):
+            input_error['role_id'] = 'Role is required'
+            input_error['error'] = True
+        return input_error['error']
+
     def display(self, request, params={}):
         return render(request, self.get_template(), {'form': self.form})
 
     def submit(self, request, params={}):
-        try:
-            user = self.form_to_model(User())
-            self.get_service().save(user)
-            if self.form['id'] > 0:
-                self.form['message'] = 'User Updated Successfully...!!!'
-            else:
-                self.form['message'] = 'User Added Successfully...!!!'
-        except Exception as e:
-            self.form['message'] = str(e)
-            self.form['error'] = True
-        return render(request, self.get_template(), {'form': self.form})
+
+            try:
+                user = self.form_to_model(User())
+                self.get_service().save(user)
+                if self.form['id'] > 0:
+                    self.form['message'] = 'User Updated Successfully...!!!'
+                    self.form['error'] = False
+                else:
+                    self.form['message'] = 'User Added Successfully...!!!'
+                    self.form['error'] = False
+
+            except Exception as e:
+                self.form['message'] = str(e)
+                self.form['error'] = True
+
+            return render(request, self.get_template(), {'form': self.form})
 
     def get_service(self):
         return UserService()

@@ -9,16 +9,12 @@ class RoleListCtl(BaseCtl):
     def request_to_form(self, request):
         self.form['name'] = request.POST.get('name')
 
-    def display(self, request, params = {}):
-        if params ['operation'] == 'delete' and params['id'] > 0:
-            self.get_service().delete(params['id'])
-            return redirect('/ors/RoleList/')
-
+    def display(self, request,params = {}):
         role_list = self.get_service().search(self.form)
         self.form['list'] = role_list
         return render(request, self.get_template(), {"form": self.form})
 
-    def submit(self, request,params ={}):
+    def submit(self, request,params = {}):
 
         if request.POST.get('operation', '') == "next":
             self.form['page_no'] = int(request.POST['pageNo'])
@@ -33,7 +29,6 @@ class RoleListCtl(BaseCtl):
         self.form['list'] = role_list
 
         return render(request, self.get_template(), {"form": self.form})
-
 
     def get_service(self):
         return RoleService()
