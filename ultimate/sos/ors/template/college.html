@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include 'header.html' %}
+<form method="POST">
+    {% csrf_token %}
+    <div align="center">
+        <h1 style="margin-bottom: -10px; color: navy;">
+            {% if form.id > 0 %}
+            Update College
+            {% else %}
+            Add College
+            {% endif %}
+        </h1>
+        <div style="height: 30px;">
+            {% if form.error %}
+            <h3><font color="red">{{ form.message }}</font></h3>
+            {% else %}
+
+
+            <h3><font color="green">{{ form.message }}</font></h3>
+            {% endif %}
+
+        </div>
+        <input type="hidden" name="id" value="{{ form.id }}">
+        <table>
+            <tr>
+                <th>College Name:</th>
+                <td><input type="text" name="name" value="{{ form.name }}"></td>
+                <td style="position: fixed;"><font color="red">{{ form.input_error.name }}</font></td>
+            </tr>
+            <tr>
+                <th>Address:</th>
+                <td><input type="text" name="address" value="{{ form.address }}"></td>
+                <td style="position: fixed;"><font color="red">{{ form.input_error.address }}</font></td>
+            </tr>
+            <tr>
+                <th>City:</th>
+                <td><input type="text" name="city" value="{{ form.city }}"></td>
+                <td style="position: fixed;"><font color="red">{{ form.input_error.city }}</font></td>
+            </tr>
+            <tr>
+                <th>State:</th>
+                <td><input type="text" name="state" value="{{ form.state }}"></td>
+                <td style="position: fixed;"><font color="red">{{ form.input_error.state }}</font></td>
+            </tr>
+            <tr>
+                <th>Phone Number:</th>
+                <td><input type="text" name="phone_number" value="{{ form.phone_number }}" style="width:98%"></td>
+                <td style="position: fixed;"><font color="red">{{ form.input_error.phone_number }}</font></td>
+            </tr>
+
+            <tr>
+                <th></th>
+                <td>
+                    {% if form.id > 0 %}
+                    <input type="submit" name="operation" value="update">
+                    <button><a href="/ors/CollegeList/">list</a></button>
+                    {% else %}
+                    <input type="submit" name="operation" value="save">
+                    <button><a href="/ors/College/">reset</a></button>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+{% include 'footer.html' %}
+
+</body>
+</html>

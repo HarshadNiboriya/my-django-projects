@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include 'header.html' %}
+<form method="POST">
+    {% csrf_token %}
+    <div align="center">
+        <h1 style="margin-bottom: -10px; color: navy;">
+            {% if form.id > 0 %}
+            Update Marksheet
+            {% else %}
+            Add Marksheet
+            {% endif %}
+        </h1>
+        <div style="height: 30px;">
+            {% if form.error %}
+            <h3><font color="red">{{ form.message }}</font></h3>
+            {% else %}
+            <h3><font color="green">{{ form.message }}</font></h3>
+            {% endif %}
+        </div>
+        <input type="hidden" name="id" value="{{ form.id }}">
+        <table>
+            <tr>
+                <th>Roll No:</th>
+                <td><input type="text" name="roll_number" value="{{ form.roll_number }}"></td>
+                <td style="position: fixed;"><font color="red">{{ form.input_error.roll_number }}</font></td>
+            </tr>
+            <tr>
+                <th>Student:</th>
+                <td>
+                   {{ preload_data.student_select|safe }}
+                </td>
+                <td style="position: fixed; color: red;">{{ form.input_error.student_id }}</td>
+            </tr>
+            <tr>
+                <th>physics:</th>
+                <td><input type="text" name="physics" value="{{ form.physics }}"></td>
+                <td style="position: fixed;"><font color="red">{{ form.input_error.physics }}</font></td>
+            </tr>
+            <tr>
+                <th>chemistry:</th>
+                <td><input type="text" name="chemistry" value="{{ form.chemistry }}"></td>
+                <td style="position: fixed;"><font color="red">{{ form.input_error.chemistry }}</font></td>
+            </tr>
+            <tr>
+                <th>maths:</th>
+                <td><input type="text" name="maths" value="{{ form.maths }}"></td>
+                <td style="position: fixed;"><font color="red">{{ form.input_error.maths }}</font></td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    {% if form.id > 0 %}
+                    <input type="submit" name="operation" value="update">
+                    <button><a href="/ors/MarksheetList/">list</a></button>
+                    {% else %}
+                    <input type="submit" name="operation" value="save">
+                    <button><a href="/ors/Marksheet/">reset</a></button>
+
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+{% include 'footer.html' %}
+</body>
+</html>
