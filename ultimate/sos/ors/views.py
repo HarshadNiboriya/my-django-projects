@@ -18,6 +18,7 @@ from .ctl.student_ctl import StudentCtl
 from .ctl.student_list_ctl import StudentListCtl
 from .ctl.marksheet_ctl import MarksheetCtl
 from .ctl.marksheet_list_ctl import MarksheetListCtl
+from .ctl.forget_password_ctl import ForgetPasswordCtl
 
 def welcome(request):
     return render(request, 'welcome.html')
