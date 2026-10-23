@@ -1,0 +1,7 @@
+Django>=5.2,<5.3
+mysqlclient
+django-cors-headers
+djangorestframework
+djangorestframework-simplejwt
+xhtml2pdf
+xlwt
