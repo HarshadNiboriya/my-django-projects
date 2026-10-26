@@ -29,6 +29,7 @@ class LoginCtl(BaseCtl):
             user_data = self.get_service().authenticate(self.form['login_id'], self.form['password'])
             if user_data:
                 request.session['first_name'] = user_data.first_name
+                request.session['id'] = user_data.id
                 return redirect('/ors/Welcome/')
 
             else:

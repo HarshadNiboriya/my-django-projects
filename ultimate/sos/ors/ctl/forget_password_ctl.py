@@ -1,6 +1,5 @@
 
 from django.shortcuts import render
-
 from .base_ctl import BaseCtl
 from ..utility.data_validator import DataValidator
 from ..service.forget_service import ForgetPasswordService
@@ -39,4 +38,4 @@ class ForgetPasswordCtl(BaseCtl):
         return ForgetPasswordService()
 
     def get_template(self):
-        return 'forgetpassword.html'
+        return 'forgetpassword.html'    
