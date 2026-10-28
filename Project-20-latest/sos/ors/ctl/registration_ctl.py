@@ -44,7 +44,6 @@ class RegistrationCtl(BaseCtl):
         self.form['address'] = request.POST.get('address')
         self.form['gender'] = request.POST.get('gender')
 
-
     def form_to_model(self, obj):
         obj.id = self.form['id']
         obj.first_name = self.form['first_name']
@@ -58,23 +57,22 @@ class RegistrationCtl(BaseCtl):
         obj.role_name = 'Student'
         return obj
 
-    def display(self, request,params = {}):
+    def display(self, request, params={}):
         return render(request, self.get_template(), {'form': self.form})
 
-    def submit(self, request,params = {}):
-            try:
-                user = self.form_to_model(User())
-                self.get_service().save(user)
-                self.form['message'] = 'User Registration Successfully...!!!'
-                self.form['error'] = False
-            except Exception as e:
-                self.form['message'] = str(e)
-                self.form['error'] = True
-            return render(request, self.get_template(), {'form': self.form})
-
+    def submit(self, request, params={}):
+        try:
+            user = self.form_to_model(User())
+            self.get_service().user_register(user)
+            self.form['message'] = 'User Registration Successfully...!!!'
+            self.form['error'] = False
+        except Exception as e:
+            self.form['message'] = str(e)
+            self.form['error'] = True
+        return render(request, self.get_template(), {'form': self.form})
 
     def get_service(self):
-         return UserService()
+        return UserService()
 
     def get_template(self):
         return 'registration.html'
