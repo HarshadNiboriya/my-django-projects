@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include 'header.html %}
+<div align="center">
+    <form>
+        <h1>Test</h1>
+        <table>
+            <tr>
+                <th>Gender</th>
+                <td>
+                    {{ form.preload_data.gender_select|safe }}
+                </td>
+            </tr>
+            <tr>
+                <th>Role:</th>
+                <td>
+                    {{ form.preload_data.role|safe }}
+                </td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>
+                    {{ form.preload_data.user_select|safe }}
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+</body>
+</html>
