@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+<body>
+
+{% include 'header.html' %}
+
+<div class="container py-3">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0">User Registration</h4>
+                    <small>Create Your Account</small>
+                </div>
+
+                <div class="card-body p-3 p-md-4">
+
+                    <!-- Success / Error Message -->
+                    {% if form.message %}
+                        {% if form.error %}
+                            <div class="alert alert-danger text-center py-2">
+                                {{ form.message }}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-success text-center py-2">
+                                <strong>Registration Successfully!!</strong>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="row g-3">
+
+                            <!-- First Name -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">First Name</label>
+
+                                <input type="text"
+                                       name="firstName"
+                                       class="form-control {% if form.input_error.first_name %}is-invalid{% endif %}"
+                                       placeholder="Enter First Name"
+                                       value="{{ form.first_name|default_if_none:'' }}">
+
+                                {% if form.input_error.first_name %}
+                                    <div class="invalid-feedback">
+                                        {{ form.input_error.first_name }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Last Name</label>
+
+                                <input type="text"
+                                       name="lastName"
+                                       class="form-control {% if form.input_error.last_name %}is-invalid{% endif %}"
+                                       placeholder="Enter Last Name"
+                                       value="{{ form.last_name|default_if_none:'' }}">
+
+                                {% if form.input_error.last_name %}
+                                    <div class="invalid-feedback">
+                                        {{ form.input_error.last_name }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Login ID -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Login ID</label>
+
+                                <input type="text"
+                                       name="loginId"
+                                       class="form-control {% if form.input_error.login_id %}is-invalid{% endif %}"
+                                       placeholder="Enter Unique Login ID"
+                                       value="{{ form.login_id|default_if_none:'' }}">
+
+                                {% if form.input_error.login_id %}
+                                    <div class="invalid-feedback">
+                                        {{ form.input_error.login_id }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Password -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Password</label>
+
+                                <input type="password"
+                                       name="password"
+                                       class="form-control {% if form.input_error.password %}is-invalid{% endif %}"
+                                       placeholder="Enter Password">
+
+                                {% if form.input_error.password %}
+                                    <div class="invalid-feedback">
+                                        {{ form.input_error.password }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- DOB -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Date of Birth</label>
+
+                                <input type="date"
+                                       name="dob"
+                                       class="form-control {% if form.input_error.dob %}is-invalid{% endif %}"
+                                       value="{{ form.dob|default_if_none:'' }}">
+
+                                {% if form.input_error.dob %}
+                                    <div class="invalid-feedback">
+                                        {{ form.input_error.dob }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Gender</label>
+
+                                <select name="gender"
+                                        class="form-select {% if form.input_error.gender %}is-invalid{% endif %}">
+
+                                    <option value="">Select Gender</option>
+
+                                    <option value="Male"
+                                        {% if form.gender == 'Male' %}selected{% endif %}>
+                                        Male
+                                    </option>
+
+                                    <option value="Female"
+                                        {% if form.gender == 'Female' %}selected{% endif %}>
+                                        Female
+                                    </option>
+
+                                </select>
+
+                                {% if form.input_error.gender %}
+                                    <div class="invalid-feedback">
+                                        {{ form.input_error.gender }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Address -->
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Address</label>
+
+                                <input type="text"
+                                       name="address"
+                                       class="form-control {% if form.input_error.address %}is-invalid{% endif %}"
+                                       placeholder="Enter Address"
+                                       value="{{ form.address|default_if_none:'' }}">
+
+                                {% if form.input_error.address %}
+                                    <div class="invalid-feedback">
+                                        {{ form.input_error.address }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-12 d-flex gap-2 mt-4">
+
+                                <button type="submit"
+                                        name="operation"
+                                        value="signUp"
+                                        class="btn btn-primary flex-fill">
+                                    Register
+                                </button>
+
+                                <a href="/ors/Registration/"
+                                   class="btn btn-outline-secondary flex-fill">
+                                    Reset
+                                </a>
+
+                            </div>
+
+                            <div class="col-12 text-center">
+                                <span class="text-muted">Already have an account?</span>
+                                <a href="/ors/Login/" class="text-decoration-none">
+                                    Login Here
+                                </a>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

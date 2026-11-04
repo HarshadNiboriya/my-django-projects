@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+</head>
+<body>
+
+{% include 'header.html' %}
+
+<div class="container py-3">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-9">
+
+            <div class="card shadow border-0">
+
+                <!-- Heading -->
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0">
+                        {% if form.id > 0 %}
+                        Update User
+                        {% else %}
+                        Add User
+                        {% endif %}
+                    </h4>
+                </div>
+
+                <div class="card-body p-3 p-md-4">
+
+                    <!-- Success / Error Message -->
+                    {% if form.message %}
+                    <div class="alert {% if form.error %}alert-danger{% else %}alert-success{% endif %} text-center py-2">
+                        {{ form.message }}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST" autocomplete="off">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="id" value="{{ form.id|default:0 }}">
+
+                        <div class="row g-3">
+
+                            <!-- First Name -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">First Name</label>
+
+                                <input type="text"
+                                       name="firstName"
+                                       class="form-control {% if form.input_error.first_name %}is-invalid{% endif %}"
+                                       placeholder="Enter First name"
+                                       value="{{ form.first_name|default_if_none:'' }}">
+
+                                {% if form.input_error.first_name %}
+                                <div class="invalid-feedback">
+                                    {{ form.input_error.first_name }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Last Name</label>
+
+                                <input type="text"
+                                       name="lastName"
+                                       class="form-control {% if form.input_error.last_name %}is-invalid{% endif %}"
+                                       placeholder="Enter Last name"
+                                       value="{{ form.last_name|default_if_none:'' }}">
+
+                                {% if form.input_error.last_name %}
+                                <div class="invalid-feedback">
+                                    {{ form.input_error.last_name }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Login ID -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Login ID</label>
+
+                                <input type="text"
+                                       name="loginId"
+                                       autocomplete="off"
+                                       class="form-control {% if form.input_error.login_id %}is-invalid{% endif %}"
+                                       placeholder="Enter Login ID"
+                                       value="{{ form.login_id|default_if_none:'' }}">
+
+                                {% if form.input_error.login_id %}
+                                <div class="invalid-feedback">
+                                    {{ form.input_error.login_id }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Password -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Password</label>
+
+                                <input type="password"
+                                       name="password"
+                                       autocomplete="new-password"
+                                       class="form-control {% if form.input_error.password %}is-invalid{% endif %}"
+                                       placeholder="Enter Password"
+                                       value="{{ form.password|default_if_none:'' }}">
+
+                                {% if form.input_error.password %}
+                                <div class="invalid-feedback">
+                                    {{ form.input_error.password }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- DOB -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Date of Birth</label>
+
+                                <input type="date"
+                                       name="dob"
+                                       class="form-control {% if form.input_error.dob %}is-invalid{% endif %}"
+                                       value="{{ form.dob|default_if_none:'' }}">
+
+                                {% if form.input_error.dob %}
+                                <div class="invalid-feedback">
+                                    {{ form.input_error.dob }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Address -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Address</label>
+
+                                <input type="text"
+                                       name="address"
+                                       class="form-control {% if form.input_error.address %}is-invalid{% endif %}"
+                                       placeholder="Enter Address"
+                                       value="{{ form.address|default_if_none:'' }}">
+
+                                {% if form.input_error.address %}
+                                <div class="invalid-feedback">
+                                    {{ form.input_error.address }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Gender</label>
+
+                                {{ preload_data.gender_select|safe }}
+
+                                {% if form.input_error.gender %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.input_error.gender }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Role -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Role</label>
+
+                                {{ preload_data.role_select|safe }}
+
+                                {% if form.input_error.role_id %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.input_error.role_id }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-12 d-flex gap-2 mt-4">
+
+                                {% if form.id > 0 %}
+
+                                <button type="submit"
+                                        name="operation"
+                                        value="update"
+                                        class="btn btn-primary flex-fill">
+                                    Update User
+                                </button>
+
+                                <a href="/ors/UserList/"
+                                   class="btn btn-outline-secondary flex-fill">
+                                    User List
+                                </a>
+
+                                {% else %}
+
+                                <button type="submit"
+                                        name="operation"
+                                        value="save"
+                                        class="btn btn-primary flex-fill">
+                                    Save User
+                                </button>
+
+                                <a href="/ors/User/"
+                                   class="btn btn-outline-secondary flex-fill">
+                                    Reset
+                                </a>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

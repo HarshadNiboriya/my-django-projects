@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject List</title>
+</head>
+<body>
+
+{% include "header.html" %}
+
+<div class="container-fluid py-4">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white text-center py-3">
+            <h4 class="mb-0">Subject List</h4>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Search Form -->
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="row g-2 align-items-end mb-4">
+
+                    <div class="col-12 col-md-5">
+                        <label class="form-label fw-semibold">Subject Name</label>
+
+                        <input type="text"
+                               name="name"
+                               class="form-control"
+                               placeholder="Enter subject name here"
+                               value="{{ form.name|default_if_none:'' }}">
+                    </div>
+
+                    <div class="col-12 col-md-auto">
+                        <button type="submit"
+                                name="operation"
+                                value="search"
+                                class="btn btn-primary w-100">
+                            Search
+                        </button>
+                    </div>
+
+<!--                    <div class="col-12 col-md-auto">-->
+<!--                        <a href="/ors/Subject/"-->
+<!--                           class="btn btn-outline-success w-100">-->
+<!--                            Add Subject-->
+<!--                        </a>-->
+<!--                    </div>-->
+
+                </div>
+            </form>
+
+            {% if form.list|length > 0 %}
+
+                <!-- Subject Table -->
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-striped table-hover align-middle text-center">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>S. No.</th>
+                                <th>Subject Name</th>
+                                <th>Description</th>
+                                <th>Course</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for l in form.list %}
+                            <tr>
+                                <td>
+                                    {{ form.index|add:forloop.counter }}
+                                </td>
+
+                                <td>{{ l.name }}</td>
+
+                                <td>{{ l.description }}</td>
+
+                                <td>{{ l.course }}</td>
+
+                                <td>
+                                    <a href="/ors/Subject/edit/{{ l.id }}/"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Edit
+                                    </a>
+
+                                    <a href="/ors/SubjectList/delete/{{ l.id }}/"
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('Are you sure you want to delete this subject?');">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <!-- Pagination Form -->
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <input type="hidden"
+                           name="name"
+                           value="{{ form.name|default_if_none:'' }}">
+
+                    <input type="hidden"
+                           name="pageNo"
+                           value="{{ form.page_no }}">
+
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+
+                        <button type="submit"
+                                name="operation"
+                                value="previous"
+                                class="btn btn-outline-primary"
+                                {% if not form.has_previous %}disabled{% endif %}>
+                            Previous
+                        </button>
+
+                        <span class="fw-semibold">
+                            Page : {{ form.page_no }}
+                        </span>
+
+                        <button type="submit"
+                                name="operation"
+                                value="next"
+                                class="btn btn-outline-primary"
+                                {% if not form.has_next %}disabled{% endif %}>
+                            Next
+                        </button>
+
+                    </div>
+                </form>
+
+            {% else %}
+
+                <div class="text-center py-5">
+                    <h5 class="text-danger mb-3">No Record Found</h5>
+
+                    <a href="/ors/SubjectList/"
+                       class="btn btn-primary">
+                        back
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
